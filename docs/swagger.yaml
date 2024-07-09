@@ -1,0 +1,215 @@
+basePath: /api/v1
+definitions:
+  asset.AssetResponseDTO:
+    properties:
+      createdAt:
+        type: string
+      data:
+        items:
+          type: integer
+        type: array
+      name:
+        type: string
+      uid:
+        type: integer
+    type: object
+  auth.AuthDTO:
+    properties:
+      login:
+        maxLength: 255
+        minLength: 3
+        type: string
+      password:
+        maxLength: 255
+        minLength: 3
+        type: string
+    required:
+    - login
+    - password
+    type: object
+  response.Data:
+    properties:
+      code:
+        default: 200
+        type: integer
+      data: {}
+      errors: {}
+      meta: {}
+      text:
+        type: string
+    type: object
+  v1.tokenResponse:
+    properties:
+      access_token:
+        type: string
+      expires_in:
+        type: integer
+    type: object
+  v1.uploadResp:
+    properties:
+      status:
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: API сервер для тестово задания
+  title: TestApp API
+  version: "1.0"
+paths:
+  /asset/:
+    get:
+      consumes:
+      - application/json
+      description: Получение всех ассетов текущего пользователя
+      operationId: asset-getlist
+      parameters:
+      - description: Токен доступа для текущего пользователя
+        example: Bearer access_token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список ассетов
+          schema:
+            items:
+              $ref: '#/definitions/asset.AssetResponseDTO'
+            type: array
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/response.Data'
+      summary: Получение списка ассетов
+      tags:
+      - API для работы с ассетами
+  /asset/{name}:
+    delete:
+      consumes:
+      - application/json
+      description: Удаление одного файла по его имени
+      operationId: asset-delete
+      parameters:
+      - description: Токен доступа для текущего пользователя
+        example: Bearer access_token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Название файла
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Статус
+          schema:
+            $ref: '#/definitions/v1.uploadResp'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/response.Data'
+      summary: Удаление ассета
+      tags:
+      - API для работы с ассетами
+    get:
+      consumes:
+      - application/json
+      description: Получение одного файла по его имени
+      operationId: asset-get
+      parameters:
+      - description: Токен доступа для текущего пользователя
+        example: Bearer access_token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Название файла
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Ассет
+          schema:
+            $ref: '#/definitions/asset.AssetResponseDTO'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/response.Data'
+      summary: Получение ассета
+      tags:
+      - API для работы с ассетами
+  /asset/upload/{name}:
+    post:
+      consumes:
+      - application/json
+      description: Аплоад файла на сервер
+      operationId: asset-upload
+      parameters:
+      - description: Токен доступа для текущего пользователя
+        example: Bearer access_token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Название файла
+        in: path
+        name: name
+        required: true
+        type: string
+      - description: Любое тело запроса
+        in: body
+        name: body
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Статус
+          schema:
+            $ref: '#/definitions/v1.uploadResp'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/response.Data'
+      summary: Upload файла в базу данных
+      tags:
+      - API для работы с ассетами
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Авторизация пользователя
+      operationId: auth-login
+      parameters:
+      - description: credentials
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/auth.AuthDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Токен
+          schema:
+            $ref: '#/definitions/v1.tokenResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/response.Data'
+      summary: Авторизация пользователя
+      tags:
+      - API для авторизации пользователей
+swagger: "2.0"
