@@ -127,6 +127,7 @@ func (h *Handler) getAsset(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Токен доступа для текущего пользователя" example(Bearer access_token)
+// @Param input query asset.GetAssetsDTO true "пагинация"
 // @Success 200 {object} []asset.AssetResponseDTO "Список ассетов"
 // @Failure default {object} response.Data
 // @Router /asset/ [get]

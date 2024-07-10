@@ -7,5 +7,5 @@ type ServiceDTO struct {
 type PaginationDTO struct {
 	Limit  int `form:"limit,default=50" json:"limit"`
 	Page   int `form:"page,default=1" json:"page"`
-	Offset int
+	Offset int `swaggerignore:"true"`
 }

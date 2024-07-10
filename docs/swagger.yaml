@@ -70,6 +70,12 @@ paths:
         name: Authorization
         required: true
         type: string
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: page
+        type: integer
       produces:
       - application/json
       responses:

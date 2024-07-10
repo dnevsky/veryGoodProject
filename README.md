@@ -4,6 +4,8 @@
 
 Для миграций я использовал `goose`.
 
+`go install github.com/pressly/goose/v3/cmd/goose@latest`
+
 Создать файл миграции:
 `make create-migration-...`,
 
@@ -14,6 +16,19 @@
 
 Откатить миграцию:
 `make migration down`
+
+Поднять проект:
+
+1. `go install github.com/pressly/goose/v3/cmd/goose@latest`
+2. optional `go install github.com/go-swagger/go-swagger/cmd/swagger@latest` или `brew install go-swagger` и в path нужно добавить `export PATH=$PATH:$HOME/go/bin`
+3. установить докер
+4. `docker-compose up -d postgres_db`
+5. `make migrate-up`
+6. `go run cmd/app/main.go`
+
+проект запущен. Мог сделать в докер компоусе, но думаю и так ок. Докер файл я описал
+
+Пересобрать доку - `make swag`
 
 #
 
@@ -125,5 +140,3 @@ GET ./metrics
 Все остальные коды совпадают с тем, что они значат.
 
 Так же написал доку на сваггере. До этого доку вёл в постмане, тут решил сваггер затестить. Не идеально, но прикольно получилось.
-
-Актуализировать доку: `make swag`
